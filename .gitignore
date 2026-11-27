@@ -1,0 +1,8 @@
+# build products inside src/ (the shipped binaries live in bin/)
+src/obj/
+src/*.OS2
+src/*.map
+# editor and backup leftovers
+*.bak
+*.tmp
+*~
