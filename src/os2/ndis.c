@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
- * ndis.c - NDIS 2.0.1 MAC front-end of the RTL8821AE OS/2 driver (from qc_ndis.c of the QCA6174 driver).
+ * ndis.c - NDIS 2.0.1 MAC front-end of the RTL8821AE / RTL8821CE OS/2 drivers (from qc_ndis.c of the QCA6174 driver).
  *
  * Adapted from rt_ndis.c of the OS2World RTL88EU driver (GPL-2.0-only), written from the NDIS 2.0.1
  * specification: at INIT the driver registers its common characteristics table with the Protocol Manager
@@ -481,7 +481,7 @@ WORD __cdecl ndis_c_indon(void)
    return NDIS_SUCCESS;
 }
 
-/* ===== IP interface number (lanN): position of [RTL8821AE_NIF] in the Bindings of [TCPIP_NIF] ===== */
+/* ===== IP interface number (lanN): position of [DRV_NIF] in the Bindings of [TCPIP_NIF] ===== */
 USHORT g_lannum = 1;
 
 #define PL_MAX 600

@@ -5,8 +5,8 @@
  * From qc_pci.c of the QCA6174 driver (github.com/psmedley/qca6174), made chip-independent: the back end says which
  * functions it drives (hw_pci_match), which BAR holds its registers (g_bar_cfg: configuration offset 10h for BAR0,
  * 18h for BAR2) and how big it is (g_bar_len), and handles its own interrupt (hw_irq at interrupt time, hw_hook at
- * task time from the context hook). The RTL8821AE has an I/O BAR0 and its memory registers in BAR2 (Linux rtlwifi:
- * bar_id 2), so this copy of the file reads the BAR the back end names; "BAR0" below means that register window.
+ * task time from the context hook). The RTL8821AE and RTL8821CE have an I/O BAR0 and their memory registers in BAR2 (Linux
+ * rtlwifi and rtw88: bar_id 2), so this copy of the file reads the BAR the back end names; "BAR0" below means that register window.
  *
  * PCI configuration space is reached with configuration mechanism #1 (ports 0CF8h/0CFCh, PCI Local Bus
  * Specification 2.x section 3.2.2.3.2). The OS/2 way is the OEMHLP$ PCI IOCtl; see docs/ARCHITECTURE.md.

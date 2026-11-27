@@ -14,13 +14,25 @@
 
 #include "os2dd.h"
 
-#define DRV_NAME        "RTL8821AE"
-#define DRV_VERSION     "0.0.1"
+/* Two drivers are built from this tree: RTL8821AE.OS2 (back end rtw/, Realtek RTL8821AE) and, with -dR88,
+ * RTL8821CE.OS2 (back end rtw88/, Realtek RTL8821CE). Their names differ, nothing else in os2/ and wlan/. */
+#define DRV_VERSION     "0.0.2"
 #define DRV_BUILD       "dev"
-#define DRV_NIF         "RTL8821AE_NIF"         /* PROTOCOL.INI section, NDIS module name                     */
-#define DRV_NIF_LC      "rtl8821ae_nif"         /* the same in lower case (PROTOCOL.INI parser)                */
+#ifdef R88
+#define DRV_NAME        "RTL8821CE"
+#define DRV_CHIP        "Realtek RTL8821CE"
+#define DRV_NIF         "RTL8821CE_NIF"         /* PROTOCOL.INI section, NDIS module name                     */
+#define DRV_NIF_LC      "rtl8821ce_nif"         /* the same in lower case (PROTOCOL.INI parser)                */
+#define DRV_NIF_FILE    "RTL8821CE.NIF"
+#define DRV_DESC        "Realtek RTL8821CE PCIe WLAN (OS/2 native)"   /* NDIS and GenMAC adapter description  */
+#else
+#define DRV_NAME        "RTL8821AE"
+#define DRV_CHIP        "Realtek RTL8821AE"
+#define DRV_NIF         "RTL8821AE_NIF"
+#define DRV_NIF_LC      "rtl8821ae_nif"
 #define DRV_NIF_FILE    "RTL8821AE.NIF"
-#define DRV_DESC        "Realtek RTL8821AE PCIe WLAN (OS/2 native)"   /* NDIS and GenMAC adapter description  */
+#define DRV_DESC        "Realtek RTL8821AE PCIe WLAN (OS/2 native)"
+#endif
 
 #ifndef TRACE
 #define TRACE 1                                 /* 1: progress markers and errors on COM1                      */
@@ -51,7 +63,7 @@ void   th8(UCHAR b);
 void   th16(USHORT w);
 void   th32(ULONG v);
 void   tnl(void);
-void   dd_err(const char *what, ULONG v);       /* "RTL8821AE: <what> <v>" on COM1, kept for the status text      */
+void   dd_err(const char *what, ULONG v);       /* "<DRV_NAME>: <what> <v>" on COM1, kept for the status text      */
 extern ULONG g_last_err;
 extern char *g_last_err_txt;
 

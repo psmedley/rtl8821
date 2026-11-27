@@ -1,3 +1,6 @@
+; PROTOCOL.INI sections for the RTL8821AE driver. For the RTL8821CE driver, use the same with RTL8821CE_NIF and
+; RTL8821CE.NIF in place of RTL8821AE_NIF and RTL8821AE.NIF (both drivers cannot be loaded together).
+
 [PROT_MAN]
 
    DRIVERNAME = PROTMAN$

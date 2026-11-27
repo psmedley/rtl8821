@@ -1,0 +1,10 @@
+[RTL8821CE]
+Type = NDIS
+Title = "Realtek RTL8821CE PCIe WLAN (OS/2 native)"
+Version = 0.0
+DriverName = WRND32$
+Xports = NETBEUI, LANDD
+
+[File]
+Name = RTL8821CE.OS2
+Path = IBMCOM\MACS

@@ -1,13 +1,15 @@
-/* RTWMAC.CMD - one-time helper: copy the adapter's real MAC into PROTOCOL.INI as NETADDRESS.
+/* RTWMAC.CMD - one-time helper: copy the adapter's real MAC into PROTOCOL.INI as NETADDRESS
+   (RTL8821AE or RTL8821CE driver: the section is taken from the DRIVER= line of the status text).
    Run it after the firmware file was copied and the adapter is READY (the status text shows HWMAC=...).
    Usage: RTWMAC [path-to-PROTOCOL.INI]   (default: \IBMCOM\PROTOCOL.INI on the boot drive) */
 parse arg ini
 if ini = '' then ini = value('BOOTDRIVE',,'OS2ENVIRONMENT')'\IBMCOM\PROTOCOL.INI'
 if left(ini,1) = '\' then ini = 'C:'ini
-mac = ''
+mac = ''; sname = '[RTL8821AE_NIF]'
 '@copy \DEV\WRND32$ rtwmac.tmp > nul'
 do while lines('rtwmac.tmp') > 0
    l = linein('rtwmac.tmp')
+   if left(l, 7) = 'DRIVER=' then sname = '['word(substr(l, 8), 1)'_NIF]'
    p = pos('HWMAC=', l)
    if p > 0 then mac = space(translate(substr(l, p + 6, 17),,':'), 0)
 end
@@ -26,14 +28,14 @@ if n = 0 then do; say 'Cannot read' ini; exit 1; end
 sect = 0; at = 0; done = 0
 do i = 1 to n
    t = strip(line.i)
-   if left(t,1) = '[' then sect = (translate(t) = '[RTL8821AE_NIF]')
+   if left(t,1) = '[' then sect = (translate(t) = sname)
    if sect & translate(word(translate(t,' ','='),1)) = 'NETADDRESS' then do
       line.i = '   NETADDRESS = "'mac'"'; done = 1
    end
    if sect then at = i
 end
 if \done then do
-   if at = 0 then do; say '[RTL8821AE_NIF] section not found in' ini; exit 1; end
+   if at = 0 then do; say sname 'section not found in' ini; exit 1; end
    do j = n to at + 1 by -1; k = j + 1; line.k = line.j; end
    k = at + 1; line.k = '   NETADDRESS = "'mac'"'
    n = n + 1

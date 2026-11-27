@@ -33,7 +33,7 @@ typedef unsigned long  DWORD;
 typedef unsigned char  BYTE;
 typedef BYTE FAR      *PBYTE;
 
-#define NDIS_MODULE_NAME      DRV_NIF         /* = PROTOCOL.INI section [RTL8821AE_NIF] */
+#define NDIS_MODULE_NAME      DRV_NIF         /* = PROTOCOL.INI section [RTL8821AE_NIF] / [RTL8821CE_NIF] */
 #define MAC_TYPE_NAME         "DIX+802.3"
 #define STATION_ADDR_LEN      6
 #define STATION_ADDR_MC       1

@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.0.2 "dev" (2026-11-27)
+
+A second driver from the same tree: **RTL8821CE.OS2** for Realtek RTL8821CE cards (PCI `10EC:C821`, `10EC:B821`), a
+different chip from the RTL8821AE (Linux drives it with rtw88).
+
+* New back end `src/rtw88/` behind the same `wlan/hw.h`, ported from Linux rtw88: power sequences, firmware download
+  (reserved page through the beacon queue, then the DDMA engine into DMEM / IMEM / EMEM), FIFO pages, auto LLT, H2C
+  queue, `rtw8821c_mac_init`, eFuse, register tables (two board variants, `tools/gen_tbl88.py`), 20 MHz channel switch,
+  eFuse transmit power, firmware IQK, Bluetooth coexistence in "WiFi only" mode, buffer-descriptor rings (BE,
+  management, H2C, beacon, RX), 8-word CAM keys with default-key search, port 0 registers, media status H2C.
+* `RTL8821CE.FW` = linux-firmware `rtw88/rtw8821c_fw.bin`; `install/RTL8821CE.NIF`; `RTWMAC.CMD` finds the section of
+  whichever driver is loaded.
+* `os2/drv.h` names the driver by build (`-dR88`); `src/Makefile` and `build.cmd` build both drivers.
+* Both drivers build without warnings; **neither has been tried on hardware yet**.
+
 ## 0.0.1 "dev" (2026-11-27)
 
 First version: a driver for Realtek RTL8821AE PCI Express cards (`10EC:8821`).

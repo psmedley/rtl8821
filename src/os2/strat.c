@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
- * strat.c - strategy routine, INIT and the clock of the RTL8821AE OS/2 driver (from qc_strat.c of the QCA6174 driver).
+ * strat.c - strategy routine, INIT and the clock of the RTL8821AE / RTL8821CE OS/2 drivers (from qc_strat.c of the QCA6174 driver).
  *
  * Adapted from rt_strat.c of the OS2World RTL88EU driver (GPL-2.0-only), written from the IBM Physical
  * Device Driver Reference (strategy commands, request packets, INIT, INIT COMPLETE, Save_Message).
@@ -8,7 +8,7 @@
  *   INIT          - DevHelp entry, switches, resident end, DMA memory and selectors, find the PCI function,
  *                   register the NDIS MAC with the Protocol Manager.
  *   OPEN / CLOSE  - start / finish a firmware upload or a debug session (dd_dbg.c).
- *   WRITE         - firmware upload ("copy /b RTL8821AE.FW \DEV\WRND32$") or a debug command line.
+ *   WRITE         - firmware upload ("copy /b RTL8821AE.FW \DEV\WRND32$", RTL8821CE.FW) or a debug command line.
  *   READ          - the driver status as KEY=VALUE text ("copy \DEV\WRND32$ con").
  *   GENIOCTL      - the GenMAC OID interface (dd_nic.c); the chip is brought up on the first request.
  */
@@ -150,7 +150,7 @@ static void rt_init(RP_INIT FAR *rp)
       return;
    }
    if (pci_find()) {
-      say(DRV_NAME ": could not be loaded: no Realtek RTL8821AE adapter found.");
+      say(DRV_NAME ": could not be loaded: no " DRV_CHIP " adapter found.");
       say((PSZ)hw_name());                       /* names a recognised device of a family not driven yet */
       rp->rph.Status |= STDON | STERR | ERROR_I24_GEN_FAILURE;
       return;
@@ -189,7 +189,7 @@ static void rt_init(RP_INIT FAR *rp)
    if (g_opt_bad)
       say(DRV_NAME ": warning - unknown option ignored (valid: /V /Q /W /B /S1../S9 /AA).");
    if (g_opt_v) {
-      say(DRV_NAME ": Realtek RTL8821AE PCIe WLAN driver for OS/2.");
+      say(DRV_NAME ": " DRV_CHIP " PCIe WLAN driver for OS/2.");
       say((PSZ)hw_name());
       say(DRV_NAME ": Version " DRV_VERSION "  Build " DRV_BUILD "  Date " __DATE__ " " __TIME__ ".");
       say(nrc == 0 ? (PSZ)DRV_NAME ": NDIS MAC registered with the Protocol Manager."

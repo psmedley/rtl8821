@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: GPL-2.0-only
+# wlink directives for RTL8821CE.OS2 (the container of the RTL88EU / QCA6174 / iwlwifi drivers: 16-bit NE "dll" with
+# an IOPL code segment, no default libraries). hdr.obj must be first, end.obj last.
+format os2 dll
+name RTL8821CE.OS2
+option quiet,map=RTL8821CE.map,verbose,caseexact,eliminate,nodefaultlibs
+option description '@#psmedley:0.0.2#@##1## 27 Nov 2026 12:00:00     ARCAOS-DEV::en:US:2:::@@Realtek RTL8821CE PCIe WiFi driver for OS/2 and ArcaOS (GenMAC + NDIS) dev'
+segment class 'CODE' iopl
+import DOSOPEN DOSCALLS.70
+import DOSCLOSE DOSCALLS.59
+import DOSREAD DOSCALLS.137
+import DOSDEVIOCTL DOSCALLS.53
+file obj/ce/hdr.obj
+file obj/ce/lib.obj
+file obj/ce/ndisx.obj
+file obj/ce/strat.obj
+file obj/ce/pci.obj
+file obj/ce/mem.obj
+file obj/ce/r88_io.obj
+file obj/ce/r88_hal.obj
+file obj/ce/r88_phy.obj
+file obj/ce/r88_trx.obj
+file obj/ce/r88_sta.obj
+file obj/ce/r88_tbl.obj
+file obj/ce/sta.obj
+file obj/ce/ndis.obj
+file obj/ce/genmac.obj
+file obj/ce/dbg.obj
+file obj/ce/end.obj

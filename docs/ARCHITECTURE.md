@@ -1,4 +1,8 @@
-# Architecture - RTL8821AE for OS/2
+# Architecture - RTL8821AE / RTL8821CE for OS/2
+
+This page describes the shared structure and the RTL8821AE back end (`src/rtw/`) in detail. The RTL8821CE back end
+(`src/rtw88/`, a different chip) has its own page: [RTL8821CE.md](RTL8821CE.md). Both drivers are built from the same
+`os2/` and `wlan/` sources; `-dR88` selects the RTL8821CE names in `os2/drv.h`.
 
 ## 1. Big picture
 
