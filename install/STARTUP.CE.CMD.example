@@ -1,0 +1,12 @@
+@echo off
+rem STARTUP.CMD lines for RTL8821CE.OS2 (Realtek RTL8821CE PCIe WiFi, PCI id 10EC:C821 or 10EC:B821).
+rem The driver cannot read files during boot, so the firmware (RTL8821CE.FW = linux-firmware
+rem rtw88/rtw8821c_fw.bin, 136 KB) is copied into it once per boot.
+rem If this line says "path not found", the driver is not loaded: \DEV\WRND32$ does not exist. Check the boot
+rem messages (the driver prints one line about the adapter it found) and the DEVICE= line in CONFIG.SYS.
+copy /b C:\IBMCOM\MACS\RTL8821CE.FW \DEV\WRND32$ > nul
+rem The adapter starts as soon as the file is in (power-on, firmware, radio tables: a second or two), so the driver
+rem knows its real MAC before the protocol stack binds. Keep this line BEFORE anything that runs NETBIND / LAN start,
+rem and before the Wireless LAN Monitor.
+rem To retry a failed start:      echo up > \DEV\WRND32$
+rem The state at any time:        copy \DEV\WRND32$ con

@@ -16,7 +16,7 @@
 
 /* Two drivers are built from this tree: RTL8821AE.OS2 (back end rtw/, Realtek RTL8821AE) and, with -dR88,
  * RTL8821CE.OS2 (back end rtw88/, Realtek RTL8821CE). Their names differ, nothing else in os2/ and wlan/. */
-#define DRV_VERSION     "0.0.2"
+#define DRV_VERSION     "0.0.3"
 #define DRV_BUILD       "dev"
 #ifdef R88
 #define DRV_NAME        "RTL8821CE"

@@ -1,11 +1,8 @@
 @echo off
-rem STARTUP.CMD lines for the RTL8821AE / RTL8821CE OS/2 drivers (Realtek PCIe WiFi).
-rem The driver cannot read files during boot, so the firmware is copied into it once per boot. Use the line of
-rem the driver in CONFIG.SYS:
-rem   RTL8821AE.OS2: RTL8821AE.FW = linux-firmware rtlwifi/rtl8821aefw_29.bin (28 KB)
-rem   RTL8821CE.OS2: RTL8821CE.FW = linux-firmware rtw88/rtw8821c_fw.bin (136 KB)
+rem STARTUP.CMD lines for RTL8821AE.OS2 (Realtek RTL8821AE PCIe WiFi, PCI id 10EC:8821).
+rem The driver cannot read files during boot, so the firmware (RTL8821AE.FW = linux-firmware
+rem rtlwifi/rtl8821aefw_29.bin, 28 KB) is copied into it once per boot.
 copy /b C:\IBMCOM\MACS\RTL8821AE.FW \DEV\WRND32$ > nul
-rem copy /b C:\IBMCOM\MACS\RTL8821CE.FW \DEV\WRND32$ > nul
 rem The adapter starts as soon as the file is in (power-on, firmware, radio tables: a second or two), so the driver
 rem knows its real MAC before the protocol stack binds. Keep this line BEFORE anything that runs NETBIND / LAN start,
 rem and before the Wireless LAN Monitor.

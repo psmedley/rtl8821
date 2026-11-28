@@ -70,6 +70,54 @@ static void say(PSZ s)
    tcom_always(13); tcom_always(10);
 }
 
+/* "name 10EC:C821 bus 03 dev 00 fn 00 IRQ 11 BAR 7D00000": what INIT found, shown at boot WITHOUT /V so that a user
+ * whose adapter does not appear can tell whether INIT ran and where it stopped (/Q silences it). */
+static char g_foundmsg[96];
+
+static char *put_hex(char *d, ULONG v, USHORT digits)
+{
+   static const char hx[] = "0123456789ABCDEF";
+   U32    u;
+   USHORT i, sh, n;
+
+   u.l = v;
+   for (i = digits; i > 0; i--) {
+      sh = (USHORT)((i - 1) * 4);
+      n = (USHORT)((sh >= 16 ? (u.w[1] >> (sh - 16)) : (u.w[0] >> sh)) & 15);
+      *d++ = hx[n];
+   }
+   return d;
+}
+
+static char *put_str(char *d, const char *s)
+{
+   while (*s)
+      *d++ = *s++;
+   return d;
+}
+
+static void say_found(void)
+{
+   char *d = g_foundmsg;
+
+   d = put_str(d, DRV_NAME ": found ");
+   d = put_hex(d, g_pci_ven, 4);
+   *d++ = ':';
+   d = put_hex(d, g_pci_dev, 4);
+   d = put_str(d, " bus ");
+   d = put_hex(d, (USHORT)(g_pci_bdf >> 8), 2);
+   d = put_str(d, " dev ");
+   d = put_hex(d, (USHORT)((g_pci_bdf >> 3) & 0x1F), 2);
+   d = put_str(d, " fn ");
+   d = put_hex(d, (USHORT)(g_pci_bdf & 7), 1);
+   d = put_str(d, " IRQ ");
+   d = put_hex(d, g_pci_irq, 2);
+   d = put_str(d, " registers at ");
+   d = put_hex(d, g_bar0, 8);
+   *d = 0;
+   say((PSZ)g_foundmsg);
+}
+
 /* ---- clock --------------------------------------------------------------------------------------- */
 static ULONG FAR *g_msp;
 
@@ -160,6 +208,7 @@ static void rt_init(RP_INIT FAR *rp)
       rp->rph.Status |= STDON | STERR | ERROR_I24_GEN_FAILURE;
       return;
    }
+   say_found();
    dd_step(3);
    if (STOP_HERE(3)) {
       rp->rph.Status |= STDON;
@@ -200,6 +249,8 @@ static void rt_init(RP_INIT FAR *rp)
    if (g_opt_w)
       say(DRV_NAME ": the boot pauses 30 seconds after all drivers are loaded.");
    dd_step(7);
+   say(nrc == 0 ? (PSZ)DRV_NAME ": ready; copy the firmware file to \\DEV\\WRND32$ (STARTUP.CMD)."
+                : (PSZ)DRV_NAME ": loaded, but the NDIS MAC is not registered (no [" DRV_NIF "] in PROTOCOL.INI, or PROTMAN$ not loaded before this driver?).");
    rp->rph.Status |= STDON;
 }
 

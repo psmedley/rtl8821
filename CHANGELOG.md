@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.0.3 "dev" (2026-11-28)
+
+First hardware report (RTL8821CE, Dave McKenna): the RTL8821CE driver loaded silently - no boot message even with /V -
+and `\DEV\WRND32$` did not exist; the RTL8821AE driver correctly refused the card and named the right driver.
+
+* Both drivers now print what INIT found without /V: the PCI id, bus / device / function, IRQ and the register BAR,
+  and a closing "ready" or "NDIS MAC not registered" line, so a silent boot can be told apart from a driver that did
+  not load. (The cause of the silent boot is not known yet; see the README section "If nothing happens at boot".)
+* Install examples are split per driver (`STARTUP.AE.CMD.example` / `STARTUP.CE.CMD.example`, `PROTOCOL.INI.AE.example`
+  / `.CE.example`); the combined STARTUP example had the RTL8821AE firmware line active, which is wrong for a CE card.
+
 ## 0.0.2 "dev" (2026-11-27)
 
 A second driver from the same tree: **RTL8821CE.OS2** for Realtek RTL8821CE cards (PCI `10EC:C821`, `10EC:B821`), a

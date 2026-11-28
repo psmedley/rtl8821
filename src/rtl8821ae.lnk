@@ -4,7 +4,7 @@
 format os2 dll
 name RTL8821AE.OS2
 option quiet,map=RTL8821AE.map,verbose,caseexact,eliminate,nodefaultlibs
-option description '@#psmedley:0.0.2#@##1## 27 Nov 2026 12:00:00     ARCAOS-DEV::en:US:2:::@@Realtek RTL8821AE PCIe WiFi driver for OS/2 and ArcaOS (GenMAC + NDIS) dev'
+option description '@#psmedley:0.0.3#@##1## 27 Nov 2026 12:00:00     ARCAOS-DEV::en:US:2:::@@Realtek RTL8821AE PCIe WiFi driver for OS/2 and ArcaOS (GenMAC + NDIS) dev'
 segment class 'CODE' iopl
 import DOSOPEN DOSCALLS.70
 import DOSCLOSE DOSCALLS.59

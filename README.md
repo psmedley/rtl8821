@@ -60,8 +60,8 @@ used, as in the RTL8821AU / AE drivers).
 1. Copy `bin\RTL8821xx.OS2`, `bin\RTL8821xx.FW` and `install\RTL8821xx.NIF` to `C:\IBMCOM\MACS`.
 2. `CONFIG.SYS`: `DEVICE=C:\IBMCOM\MACS\RTL8821xx.OS2 /V`. Only one `WRND32$` driver can be loaded: remove or `REM`
    GenMAC, the RTL USB drivers, the other driver of this package, the iwlwifi or the QCA6174 driver line.
-3. `PROTOCOL.INI`: bind `RTL8821xx_NIF` as in `install\PROTOCOL.INI.example` (MPTS can do it too, with the NIF).
-4. `STARTUP.CMD`: the `copy /b` line for your driver from `install\STARTUP.CMD.example` (the firmware, once per boot).
+3. `PROTOCOL.INI`: bind `RTL8821xx_NIF` as in `install\PROTOCOL.INI.AE.example` or `.CE.example` (MPTS can do it too, with the NIF).
+4. `STARTUP.CMD`: the `copy /b` line for your driver from `install\STARTUP.AE.CMD.example` or `STARTUP.CE.CMD.example` (the firmware, once per boot).
 5. Reboot. `copy \DEV\WRND32$ con` shows the state; `STATE=0064 READY` means the chip is up. Then `RTWMAC.CMD`
    writes the adapter's MAC into `PROTOCOL.INI` (recommended: TCP/IP copies the address when it binds).
 6. Use the Wireless LAN Monitor, or for a first test of an open network: `echo join MyNetwork > \DEV\WRND32$`.
@@ -72,6 +72,25 @@ Firmware, both Realtek's from linux-firmware (the files Linux loads for these ch
 * `RTL8821AE.FW` = `rtlwifi/rtl8821aefw_29.bin`. The RTL8821AU driver's `RTL8821AU.FW` (Realtek's version 42 "nic"
   image) is accepted as well; with it the firmware IQ calibration runs after 5 GHz joins.
 * `RTL8821CE.FW` = `rtw88/rtw8821c_fw.bin` (version 24.11).
+
+## If nothing happens at boot
+
+Since 0.0.3 each driver prints its findings at boot without `/V` (silence them with `/Q`):
+
+```
+RTL8821CE: found 10EC:C821 bus 03 dev 00 fn 0 IRQ 0B registers at F7D00000
+RTL8821CE: ready; copy the firmware file to \DEV\WRND32$ (STARTUP.CMD).
+```
+
+* **No `RTL8821xx:` line at all**: the driver was not loaded or did not get as far as printing. Check the `DEVICE=`
+  line (full path, the right file for your card) and that it comes after `PROTMAN.OS2` and the other NDIS lines.
+  `/B` makes the driver beep the number of the step it reached (n short beeps, a pause, again) - the last group
+  counted is where it stopped; `/S1` ... `/S9` end the start-up after that step (to find a step that hangs the boot).
+* **"no ... adapter found"**: the driver and the card do not match (the message names the right driver), or OS/2 does not see
+  the card (then `pci.exe` / the Hardware Manager will not list it either: check the BIOS and the slot).
+* **"found ..." but then `path not found` for `\DEV\WRND32$`**: should not happen; please send the lines the driver printed.
+* **"NDIS MAC is not registered"**: `[RTL8821xx_NIF]` is missing in `PROTOCOL.INI` or `PROTMAN$` is loaded after the driver.
+  The adapter still works as a GenMAC device, but TCP/IP cannot bind it.
 
 ## Reading the state
 
